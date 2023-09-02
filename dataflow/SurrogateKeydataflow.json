@@ -1,0 +1,67 @@
+{
+	"name": "SurrogateKeydataflow",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DelimitedText16",
+						"type": "DatasetReference"
+					},
+					"name": "EmployeeSurrogateData"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DelimitedText17",
+						"type": "DatasetReference"
+					},
+					"name": "OutputDataSource"
+				}
+			],
+			"transformations": [
+				{
+					"name": "EmpNoSurrogateKey"
+				},
+				{
+					"name": "select1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          Name as string,",
+				"          Country as string,",
+				"          Department as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> EmployeeSurrogateData",
+				"EmployeeSurrogateData keyGenerate(output(EmpID as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> EmpNoSurrogateKey",
+				"EmpNoSurrogateKey select(mapColumn(",
+				"          EmpID,",
+				"          Name,",
+				"          Department,",
+				"          Country",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"select1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          EmpID as string,",
+				"          Name as string,",
+				"          Country as string,",
+				"          Department as string,",
+				"          DeptID as string,",
+				"          DeptName as string",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> OutputDataSource"
+			]
+		}
+	}
+}

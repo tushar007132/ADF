@@ -1,0 +1,9 @@
+{
+	"name": "dev-Infinity-007",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "55123e37-3ad5-4b40-bf15-34900f7452b4",
+		"tenantId": "c61fb651-4e9f-46c3-a6d1-28c167fba903"
+	}
+}
